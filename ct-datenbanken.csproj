@@ -5,4 +5,13 @@
     <RootNamespace>ct_datenbanken</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\ObjectOriented.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Pages\Db4o.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>
