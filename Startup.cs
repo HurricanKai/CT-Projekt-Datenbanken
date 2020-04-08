@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ct_datenbanken.Data;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
 
 namespace ct_datenbanken
 {
@@ -29,6 +32,9 @@ namespace ct_datenbanken
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddDbContextPool<LibraryDbContext>(options => options
+                .UseMySql("Server=localhost;Database=library;User=root;Password=;", mySqlOptions => mySqlOptions
+                    .ServerVersion(ServerVersion.Default)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
