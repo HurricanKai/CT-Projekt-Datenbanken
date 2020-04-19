@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -11,8 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ct_datenbanken.Data;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
 
 namespace ct_datenbanken
 {
@@ -33,8 +34,20 @@ namespace ct_datenbanken
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddDbContextPool<LibraryDbContext>(options => options
-                .UseMySql("Server=localhost;Database=library;User=root;Password=;", mySqlOptions => mySqlOptions
-                    .ServerVersion(ServerVersion.Default)));
+                .UseNpgsql(Configuration["ConnectionString"], options =>
+                {
+                    options.ProvideClientCertificatesCallback((
+                        certificates =>
+                        {
+                            var cert = Configuration["Cert"];
+                            if (string.IsNullOrEmpty(cert))
+                                return;
+
+                            var c = new X509Certificate2(cert);
+                            certificates.Add(c);
+                        }));
+                    options.RemoteCertificateValidationCallback(((sender, certificate, chain, errors) => true));
+                }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
