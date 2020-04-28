@@ -1,4 +1,4 @@
-﻿@page "/beispiele/bibliothek" 
+@page "/beispiele/bibliothek" 
 @page "/beispiele/bibliothek/list"
 @page "/beispiele/bibliothek/list/{Page:int}"
 @using ct_datenbanken.Data
@@ -21,6 +21,7 @@
         <th>Editieren</th>
         <th>Details</th>
         <th>Leihen/Zurückgeben</th>
+        <th scope="col">Löschen</th>
     </tr>
     </thead>
     <tbody>
@@ -41,6 +42,7 @@
             {
                 <td><a class="btn btn-light" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Zurückgeben</a></td>
             }
+            <td><a class="btn btn-danger" role="button" @onclick=@(e => { bs.Delete(book.Id); })>Löschen</a></td>
         </tr>
     }
     <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />

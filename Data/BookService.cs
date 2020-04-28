@@ -96,6 +96,16 @@ namespace ct_datenbanken.Data
             _dbContext.SaveChanges();
         }
 
+        public void Delete(int id)
+        {
+            var book = _dbContext.Books.Find(id);
+
+            _dbContext.Books.Remove(book);
+            var authorEntry = _dbContext.Authors.Update(book.Author);
+            authorEntry.Entity.Books.Remove(book);
+            _dbContext.SaveChanges();
+        }
+        
         public void ToggleAvailability(int id)
         {
             var book = _dbContext.Books.Find(id);
