@@ -12,6 +12,7 @@
     @bookCount Bücher von @db.Authors.Count() Authoren</h2>
 <a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
 <a class="btn btn-success" role="button" @onclick="@(() => db.AddBooks())">Add 1000 Books</a>
+<Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
 <table>
     <thead>
     <tr>
@@ -25,15 +26,14 @@
     </tr>
     </thead>
     <tbody>
-    <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
-    @foreach (var book in db.Books.Skip((Page) * 50).Take(50).Include(x => x.Author).OrderBy(x => x.Title))
+    @foreach (var book in db.Books.OrderBy(x => x.Title).Skip((Page) * 50).Take(50).Include(x => x.Author))
     {
         <tr>
             <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
             <td>@book.Author.Name</td>
             <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
-            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/book/@book.Id">Hier</a></td>
             @if (book.IsAvailable)
             {
                 <td><a class="btn btn-outline-success" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Leihen</a></td>
@@ -45,9 +45,9 @@
             <td><a class="btn btn-danger" role="button" @onclick=@(e => { bs.Delete(book.Id); })>Löschen</a></td>
         </tr>
     }
-    <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
     </tbody>
 </table>
+<Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
 
 @code
 {
