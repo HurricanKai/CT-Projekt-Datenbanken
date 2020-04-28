@@ -21,7 +21,7 @@
             <a class="page-link" href="@(BaseURL + (Page + 1))">Next</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="@(BaseURL + (MaxItems / ItemsPerPage))">Last</a>
+            <a class="page-link" href="@(BaseURL + ((MaxItems - 1) / ItemsPerPage))">Last</a>
         </li>
     </ul>
 </nav>
