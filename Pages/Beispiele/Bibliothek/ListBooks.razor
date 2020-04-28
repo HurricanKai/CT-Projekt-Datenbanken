@@ -1,4 +1,4 @@
-@page "/beispiele/bibliothek" 
+﻿@page "/beispiele/bibliothek" 
 @page "/beispiele/bibliothek/list"
 @page "/beispiele/bibliothek/list/{Page:int}"
 @using ct_datenbanken.Data
@@ -15,12 +15,12 @@
 <table>
     <thead>
     <tr>
-        <th>Titel</th>
-        <th>Seitenanzahl</th>
-        <th>Author</th>
-        <th>Editieren</th>
-        <th>Details</th>
-        <th>Leihen/Zurückgeben</th>
+        <th scope="col">Titel</th>
+        <th scope="col">Seitenanzahl</th>
+        <th scope="col">Author</th>
+        <th scope="col">Editieren</th>
+        <th scope="col">Details</th>
+        <th scope="col">Leihen/Zurückgeben</th>
         <th scope="col">Löschen</th>
     </tr>
     </thead>
@@ -29,7 +29,7 @@
     @foreach (var book in db.Books.Skip((Page) * 50).Take(50).Include(x => x.Author).OrderBy(x => x.Title))
     {
         <tr>
-            <td>@book.Title</td>
+            <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
             <td>@book.Author.Name</td>
             <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
