@@ -1,4 +1,4 @@
-@page "/beispiele/bibliothek" 
+﻿@page "/beispiele/bibliothek" 
 @page "/beispiele/bibliothek/list"
 @using ct_datenbanken.Data
 @using Microsoft.EntityFrameworkCore
@@ -14,6 +14,7 @@
         <th>Author</th>
         <th>Verfügbar</th>
         <th>Editieren</th>
+        <th>Details</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
                 <td>Nein</td>
             }
             <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
+            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
         </tr>
     }
     </tbody>

@@ -1,0 +1,29 @@
+﻿@page "/beispiele/bibliothek/details/{Id:int}"
+@using ct_datenbanken.Data
+@inject BookService bs
+@inject NavigationManager NavigationManager
+
+<h1>@book.Title 
+@if (book.IsAvailable)
+{
+    <span class="badge badge-success">Verfügbar</span>
+}
+else
+{
+    <span class="badge badge-danger">Nicht Verfügbar</span>
+}
+</h1>
+<h2>Von @book.AuthorName mit @book.PageCount seiten</h2>
+
+@code{
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookDTO book;
+
+    protected override void OnInitialized()
+    {
+        book = bs.Get(Id);
+    }
+}
