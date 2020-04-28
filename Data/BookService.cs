@@ -25,7 +25,8 @@ namespace ct_datenbanken.Data
                 Title = book.Title,
                 PageCount = book.PageCount,
                 Author = authorEntry.Entity,
-                IsAvailable = book.IsAvailable
+                IsAvailable = book.IsAvailable,
+                Description = book.Description
             };
 
             var bookEntry = _dbContext.Books.Add(b);
@@ -68,7 +69,8 @@ namespace ct_datenbanken.Data
                 Title = book.Title,
                 PageCount = book.PageCount,
                 AuthorName = book.Author.Name,
-                IsAvailable = book.IsAvailable
+                IsAvailable = book.IsAvailable,
+                Description = book.Description
             };
         }
 
@@ -81,6 +83,7 @@ namespace ct_datenbanken.Data
             oldEntry.Entity.Title = dto.Title;
             oldEntry.Entity.PageCount = dto.PageCount;
             oldEntry.Entity.IsAvailable = dto.IsAvailable;
+            oldEntry.Entity.Description = dto.Description;
             
             if (old.Author.Name != dto.AuthorName)
             {

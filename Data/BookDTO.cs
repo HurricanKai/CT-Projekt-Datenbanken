@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ct_datenbanken.Data
 {
@@ -13,5 +13,6 @@ namespace ct_datenbanken.Data
         [Required]
         public string AuthorName { get; set; }
         public bool IsAvailable { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -7,5 +7,6 @@
         public int PageCount { get; set; }
         public virtual Author Author { get; set; }
         public bool IsAvailable { get; set; }
+        public string Description { get; set; }
     }
 }
