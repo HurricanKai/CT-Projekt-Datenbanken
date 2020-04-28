@@ -5,6 +5,7 @@
 @inject LibraryDbContext db
 <h1>Liste aller Bücher</h1>
 <h2>@db.Books.Count() Bücher von @db.Authors.Count() Authoren</h2>
+<a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
 <table>
     <thead>
     <tr>
