@@ -95,5 +95,28 @@ namespace ct_datenbanken.Data
 
             _dbContext.SaveChanges();
         }
+
+        public void Delete(int id)
+        {
+            var book = _dbContext.Books.Find(id);
+
+            if (book is null)
+                return;
+
+            _dbContext.Books.Remove(book);
+            var authorEntry = _dbContext.Authors.Update(book.Author);
+            authorEntry.Entity.Books.Remove(book);
+            _dbContext.SaveChanges();
+        }
+        
+        public void ToggleAvailability(int id)
+        {
+            var book = _dbContext.Books.Find(id);
+
+            var bookEntry = _dbContext.Books.Update(book);
+            bookEntry.Entity.IsAvailable = !bookEntry.Entity.IsAvailable;
+
+            _dbContext.SaveChanges();
+        }
     }
 }

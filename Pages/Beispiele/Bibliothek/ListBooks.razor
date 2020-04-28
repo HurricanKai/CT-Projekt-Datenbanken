@@ -1,41 +1,65 @@
 ﻿@page "/beispiele/bibliothek" 
 @page "/beispiele/bibliothek/list"
+@page "/beispiele/bibliothek/list/{Page:int}"
 @using ct_datenbanken.Data
 @using Microsoft.EntityFrameworkCore
 @inject LibraryDbContext db
+@inject BookService bs
+@inject NavigationManager NavigationManager
+
 <h1>Liste aller Bücher</h1>
-<h2>@db.Books.Count() Bücher von @db.Authors.Count() Authoren</h2>
+<h2>
+    @bookCount Bücher von @db.Authors.Count() Authoren</h2>
 <a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
+<a class="btn btn-success" role="button" @onclick="@(() => db.AddBooks())">Add 1000 Books</a>
 <table>
     <thead>
     <tr>
-        <th>Titel</th>
-        <th>Seitenanzahl</th>
-        <th>Author</th>
-        <th>Verfügbar</th>
-        <th>Editieren</th>
-        <th>Details</th>
+        <th scope="col">Titel</th>
+        <th scope="col">Seitenanzahl</th>
+        <th scope="col">Author</th>
+        <th scope="col">Editieren</th>
+        <th scope="col">Details</th>
+        <th scope="col">Leihen/Zurückgeben</th>
+        <th scope="col">Löschen</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var book in db.Books.Include(x => x.Author))
+    <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
+    @foreach (var book in db.Books.Skip((Page) * 50).Take(50).Include(x => x.Author).OrderBy(x => x.Title))
     {
         <tr>
-            <td>@book.Title</td>
+            <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
             <td>@book.Author.Name</td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
             @if (book.IsAvailable)
             {
-                <td>Ja</td>
+                <td><a class="btn btn-outline-success" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Leihen</a></td>
             }
             else
             {
-                <td>Nein</td>
+                <td><a class="btn btn-outline-danger" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Zurückgeben</a></td>
             }
-            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
-            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
+            <td><a class="btn btn-danger" role="button" @onclick=@(e => { bs.Delete(book.Id); })>Löschen</a></td>
         </tr>
     }
+    <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
     </tbody>
 </table>
 
+@code
+{
+    [Parameter]
+    public int Page { get; set; }
+
+    protected override void OnInitialized()
+    {
+        bookCount = db.Books.Count();
+        if ((Page + 1) * 50 >= bookCount)
+            NavigationManager.NavigateTo("/beispiele/bibliothek/list/0");
+    }
+
+    private int bookCount;
+}
