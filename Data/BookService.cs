@@ -100,6 +100,9 @@ namespace ct_datenbanken.Data
         {
             var book = _dbContext.Books.Find(id);
 
+            if (book is null)
+                return;
+
             _dbContext.Books.Remove(book);
             var authorEntry = _dbContext.Authors.Update(book.Author);
             authorEntry.Entity.Books.Remove(book);
