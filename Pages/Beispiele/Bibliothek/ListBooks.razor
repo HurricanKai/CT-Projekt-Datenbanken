@@ -1,0 +1,41 @@
+﻿@page "/beispiele/bibliothek" 
+@page "/beispiele/bibliothek/list"
+@using ct_datenbanken.Data
+@using Microsoft.EntityFrameworkCore
+@inject LibraryDbContext db
+<h1>Liste aller Bücher</h1>
+<h2>@db.Books.Count() Bücher von @db.Authors.Count() Authoren</h2>
+<a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
+<table>
+    <thead>
+    <tr>
+        <th>Titel</th>
+        <th>Seitenanzahl</th>
+        <th>Author</th>
+        <th>Verfügbar</th>
+        <th>Editieren</th>
+        <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var book in db.Books.Include(x => x.Author))
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.PageCount</td>
+            <td>@book.Author.Name</td>
+            @if (book.IsAvailable)
+            {
+                <td>Ja</td>
+            }
+            else
+            {
+                <td>Nein</td>
+            }
+            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
+            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+

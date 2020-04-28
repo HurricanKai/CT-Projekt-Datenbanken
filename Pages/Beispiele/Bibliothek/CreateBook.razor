@@ -1,0 +1,31 @@
+﻿@page "/beispiele/bibliothek/create"
+@using ct_datenbanken.Data
+@using Microsoft.EntityFrameworkCore
+@inject BookService bs
+@inject NavigationManager NavigationManager
+
+<h1>Erstelle ein neues Buch</h1>
+
+<EditForm Model="@book" OnValidSubmit="ValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="title" @bind-Value="book.Title" />
+    <InputNumber id="pageCount" @bind-Value="book.PageCount" />
+    <InputCheckbox id="available" @bind-Value="book.IsAvailable"/>
+    <InputText id="authorName" @bind-Value="book.AuthorName"/>
+    <InputTextArea id="description" @bind-Value="book.Description"></InputTextArea>
+
+    <button type="submit">Fertig</button>
+</EditForm>
+
+
+@code{
+    BookDTO book = new BookDTO();
+
+    private void ValidSubmit()
+    {
+        bs.Create(book);
+        NavigationManager.NavigateTo("/beispiele/bibliothek");
+    }
+}
