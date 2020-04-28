@@ -1,0 +1,42 @@
+﻿<nav aria-label="Page Navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="@(BaseURL + 0)">First</a>
+        </li>
+        <li class="@("page-item" + ((Page - 1) < 0 ? " disabled" : ""))">
+            <a class="page-link" href="@(BaseURL + (Page - 1))">Previous</a>
+        </li>
+        @if ((Page - 1) > 0)
+        {
+            <li class="page-item"><a class="page-link" href="@(BaseURL + (Page - 1))">@(Page)</a></li>
+        }
+        <li class="page-item active">
+            <a class="page-link" href="@(BaseURL + Page)">@(Page + 1)<span class="sr-only">(current)</span></a>
+        </li>
+        @if ((Page + 1) * ItemsPerPage < MaxItems)
+        {
+            <li class="page-item"><a class="page-link" href="@(BaseURL + (Page + 1))">@(Page + 2)</a></li>
+        }
+        <li class="@("page-item" + ((Page + 1) * ItemsPerPage >= MaxItems ? " disabled" : ""))">
+            <a class="page-link" href="@(BaseURL + (Page + 1))">Next</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="@(BaseURL + (MaxItems / ItemsPerPage))">Last</a>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    [Parameter]
+    public int Page { get; set; }
+
+    [Parameter]
+    public int MaxItems { get; set; }
+
+    [Parameter]
+    public int ItemsPerPage { get; set; }
+
+    [Parameter]
+    public string BaseURL { get; set; }
+
+}

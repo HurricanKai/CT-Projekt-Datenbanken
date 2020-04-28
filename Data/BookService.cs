@@ -95,5 +95,15 @@ namespace ct_datenbanken.Data
 
             _dbContext.SaveChanges();
         }
+
+        public void ToggleAvailability(int id)
+        {
+            var book = _dbContext.Books.Find(id);
+
+            var bookEntry = _dbContext.Books.Update(book);
+            bookEntry.Entity.IsAvailable = !bookEntry.Entity.IsAvailable;
+
+            _dbContext.SaveChanges();
+        }
     }
 }
