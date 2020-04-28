@@ -707,6 +707,4 @@ fabric.properties
 
 cert.crt
 
-appsettings.Development.json
-
-appsettings.json
+appsettings.hidden.json

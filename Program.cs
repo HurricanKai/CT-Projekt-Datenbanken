@@ -20,6 +20,14 @@ namespace ct_datenbanken
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(((hostingContext, config) =>
+                {
+                    var env = hostingContext.HostingEnvironment;
+                
+                    var reloadOnChange = hostingContext.Configuration.GetValue("hostBuilder:reloadConfigOnChange", defaultValue: true);
+
+                    config.AddJsonFile("appsettings.hidden.json", optional: true, reloadOnChange: reloadOnChange);
+                }))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
