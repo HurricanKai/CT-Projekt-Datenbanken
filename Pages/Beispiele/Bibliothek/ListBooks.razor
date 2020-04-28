@@ -32,7 +32,7 @@
             <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
             <td><a href="/beispiele/bibliothek/details/author/@book.Author.Id">@book.Author.Name</a></td>
-            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/book/@book.Id">Hier</a></td>
             <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/book/@book.Id">Hier</a></td>
             @if (book.IsAvailable)
             {
