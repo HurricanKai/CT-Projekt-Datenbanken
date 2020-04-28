@@ -57,7 +57,7 @@
     protected override void OnInitialized()
     {
         bookCount = db.Books.Count();
-        if ((Page + 1) * 50 >= bookCount)
+        if ((Page + 1) * 50 >= bookCount && Page != 0)
             NavigationManager.NavigateTo("/beispiele/bibliothek/list/0");
     }
 
