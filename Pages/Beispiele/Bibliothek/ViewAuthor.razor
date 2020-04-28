@@ -4,10 +4,20 @@
 @inject LibraryDbContext db
 @inject NavigationManager NavigationManager
 @inject BookService bs
+@inject IJSRuntime JsRuntime
 
 <h1>@author.Name</h1>
 <h3>hat @author.Books.Count registrierte Bücher</h3>
-
+<button class="btn btn-danger" @onclick=@(async e => 
+{
+    bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+    if (confirmed) {
+        db.Authors.Remove(author);
+        db.Books.RemoveRange(author.Books);
+        await db.SaveChangesAsync();
+        NavigationManager.NavigateTo("/beispiele/bibliothek/");
+    }
+})>Delete Author and Books</button>
 
 <table>
     <thead>
