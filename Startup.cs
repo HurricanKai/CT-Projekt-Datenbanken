@@ -32,7 +32,7 @@ namespace ct_datenbanken
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<BookService>();
             services.AddDbContextPool<LibraryDbContext>(options => options
                 .UseNpgsql(Configuration["ConnectionString"], options =>
                 {
