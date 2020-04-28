@@ -10,6 +10,7 @@
 <h1>Liste aller Bücher</h1>
 <h2>
     @bookCount Bücher von @db.Authors.Count() Authoren</h2>
+<a href="/beispiele/bibliothek/list-authors/">Liste der Authoren</a>
 <a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
 <a class="btn btn-success" role="button" @onclick="@(() => db.AddBooks())">Add 1000 Books</a>
 <Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
