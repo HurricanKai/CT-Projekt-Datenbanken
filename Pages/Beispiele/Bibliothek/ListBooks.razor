@@ -32,15 +32,15 @@
             <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
             <td>@book.Author.Name</td>
-            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
-            <td><a class="btn btn-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/@book.Id">Hier</a></td>
             @if (book.IsAvailable)
             {
-                <td><a class="btn btn-light" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Leihen</a></td>
+                <td><a class="btn btn-outline-success" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Leihen</a></td>
             }
             else
             {
-                <td><a class="btn btn-light" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Zurückgeben</a></td>
+                <td><a class="btn btn-outline-danger" role="button" @onclick="@(e => { bs.ToggleAvailability(book.Id); })">Zurückgeben</a></td>
             }
             <td><a class="btn btn-danger" role="button" @onclick=@(e => { bs.Delete(book.Id); })>Löschen</a></td>
         </tr>
