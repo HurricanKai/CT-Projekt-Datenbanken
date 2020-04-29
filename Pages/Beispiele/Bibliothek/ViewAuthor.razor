@@ -1,19 +1,24 @@
-﻿@page "/beispiele/bibliothek" 
-@page "/beispiele/bibliothek/list"
-@page "/beispiele/bibliothek/list/{Page:int}"
+﻿@page "/beispiele/bibliothek/details/author/{Id:int}"
 @using ct_datenbanken.Data
 @using Microsoft.EntityFrameworkCore
 @inject LibraryDbContext db
-@inject BookService bs
 @inject NavigationManager NavigationManager
+@inject BookService bs
+@inject IJSRuntime JsRuntime
 
-<h1>Liste aller Bücher</h1>
-<h2>
-    @bookCount Bücher von @db.Authors.Count() Authoren</h2>
-<a href="/beispiele/bibliothek/list-authors/">Liste der Authoren</a>
-<a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch</a>
-<a class="btn btn-success" role="button" @onclick="@(() => db.AddBooks())">Add 1000 Books</a>
-<Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
+<h1>@author.Name</h1>
+<h3>hat @author.Books.Count registrierte Bücher</h3>
+<button class="btn btn-danger" @onclick=@(async e => 
+{
+    bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure?");
+    if (confirmed) {
+        db.Authors.Remove(author);
+        db.Books.RemoveRange(author.Books);
+        await db.SaveChangesAsync();
+        NavigationManager.NavigateTo("/beispiele/bibliothek/");
+    }
+})>Delete Author and Books</button>
+
 <table>
     <thead>
     <tr>
@@ -27,13 +32,12 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var book in db.Books.OrderBy(x => x.Title).Skip((Page) * 50).Take(50).Include(x => x.Author))
+    @foreach (var book in author.Books.OrderBy(x => x.Title).Take(50))
     {
         <tr>
             <th scope="row">@book.Title</th>
             <td>@book.PageCount</td>
-            <td><a href="/beispiele/bibliothek/details/author/@book.Author.Id">@book.Author.Name</a></td>
-            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/book/@book.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/@book.Id">Hier</a></td>
             <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/book/@book.Id">Hier</a></td>
             @if (book.IsAvailable)
             {
@@ -48,19 +52,19 @@
     }
     </tbody>
 </table>
-<Pagination Page="@Page" MaxItems="@bookCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list/" />
 
-@code
-{
+@code{
+
     [Parameter]
-    public int Page { get; set; }
+    public int Id { get; set; }
+
+    private Author author;
 
     protected override void OnInitialized()
     {
-        bookCount = db.Books.Count();
-        if ((Page + 1) * 50 >= bookCount && Page != 0)
-            NavigationManager.NavigateTo("/beispiele/bibliothek/list/0");
+        author = db.Authors.Where(x => x.Id == Id).Include(x => x.Books).SingleOrDefault();
+        
+        if (author is null)
+            NavigationManager.NavigateTo("/beispiele/bibliothek/");
     }
-
-    private int bookCount;
 }
