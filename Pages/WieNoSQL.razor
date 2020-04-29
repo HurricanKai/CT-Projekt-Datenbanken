@@ -1,0 +1,44 @@
+﻿@page "/wie-no-sql"
+
+<h1>Wie funktionieren Datenbanken ohne SQL?</h1>
+<h3>NoSQL</h3>
+<p>
+    Eine der bekanntesten NoSQL Datenbanken ist MongoDB (siehe auch im <a href="/clustering">Clustering Artikel</a>)
+    Daher wird MongoDB hier als beispiel genommen, es gibt natürlich unterschiede bei anderen NoSQL Datenbanken, aber die unterschiede sind nicht gigantisch.
+</p>
+
+<h4>Warum?</h4>
+<p>
+    <a href="/sql">SQL</a> war sehr lange der standard wie man mit Datenbanken gesprochen hat. 
+    Es gab immer andere, aber SQL ist weit verbreitet & akzeptiert.
+    In neuerer wollen immer weniger Developer eine extra sprache um mit Datenbanken zu kommunizieren,
+    sie bevorzugen es die sprache ihrer wahl zu benutzen. Das ist natürlich auch mit SQL Datenbanken machbar,
+    so wie im <a href="/beispiele/bibliothek">Bibliotheks Beispiel</a> demonstiert.
+    Hier werden einfach befehle aus der Sprache der wahl (hier C#) nach SQL übersetzt, welches dann an den server weitergegeben wird.
+    Aber macht das sinn? So müssen doch mehrere übersetzer zusammenarbeiten, ohne das der eigentlich wert von SQL, das ein mensch es lesen/schreiben kann, genutzt wird.
+    Deshalb NoSQL, Binäre Protokolle anstatt lange, komplexe, und oft langsame übersetzer.
+</p>
+<p>
+    Es ist auch wichtig zu sehen das diese Binären Protokolle viel Flexibler sind. Schon lange haben diverse SQL datenbanken versucht SQL zu erweiteren.
+    Leider unterstützt kaum ein übersetzer diese extras, und kaum jemand schreibt diese extras von hand (wenn SQL überhaupt von hand geschrieben wird)
+    So unterstützt MonoDB richtige Graphen (u.a. Bäume), komplettes BSON (Binäres JSON) etc.
+</p>
+
+<h4>Wie sieht sowas aus?</h4>
+<p>
+    Siehe <a href="https://docs.mongodb.com/manual/tutorial/getting-started/">Mongo DB Beispiele</a>
+<pre>
+<code>
+db.inventory.insertMany([
+   { item: "journal", qty: 25, status: "A", size: { h: 14, w: 21, uom: "cm" }, tags: [ "blank", "red" ] },
+   { item: "notebook", qty: 50, status: "A", size: { h: 8.5, w: 11, uom: "in" }, tags: [ "red", "blank" ] },
+   { item: "paper", qty: 10, status: "D", size: { h: 8.5, w: 11, uom: "in" }, tags: [ "red", "blank", "plain" ] },
+   { item: "planner", qty: 0, status: "D", size: { h: 22.85, w: 30, uom: "cm" }, tags: [ "blank", "red" ] },
+   { item: "postcard", qty: 45, status: "A", size: { h: 10, w: 15.25, uom: "cm" }, tags: [ "blue" ] }
+]);
+</code>
+</pre>
+    Hier sind bereits mehrere dinge die in SQL eher schwierig werden.
+    zum einen enthält dieser typ einen untergeordneten zusamengesetzten typen, <code>size</code> (<code>size: { h: 14, w: 21, uom: "cm" }</code>). So ein typ müsste in SQL in mehrere direkte felder ausgepackt werden.
+    Zusätzlich enthält dieser Typ einen direkten Array <code>tags: [ "blank", "red" ]</code> was in SQL überhaupt nicht machbar ist, ohne einen extra Tabelle anzulegen.
+</p>
