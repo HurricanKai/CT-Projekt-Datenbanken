@@ -7,15 +7,38 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Was ist eine Datenbank
-            </NavLink>
+       <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All" ActiveClass="active">Was ist eine Datenbank</NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="beispiele">
-                Beispiele
-            </NavLink>
+            <NavLink class="nav-link" href="beispiele/bibliothek" Match="NavLinkMatch.Prefix" ActiveClass="active">Bibliotheks Beispiel</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/dokumentenorientierte-datenbanken" Match="NavLinkMatch.All" ActiveClass="active">Dokument Datenbanken</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/key-value-store" Match="NavLinkMatch.All" ActiveClass="active">Key Value Store</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/microsoft-access" Match="NavLinkMatch.All" ActiveClass="active">Microsoft Access</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/microsoft-sql-server" Match="NavLinkMatch.All" ActiveClass="active">Microsoft SQL Server</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/my-sql" Match="NavLinkMatch.All" ActiveClass="active">MySQL</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/no-sql" Match="NavLinkMatch.All" ActiveClass="active">NoSQL</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/redis" Match="NavLinkMatch.All" ActiveClass="active">Redis</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/relationale" Match="NavLinkMatch.All" ActiveClass="active">Relationale Datenbanken</NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/sql" Match="NavLinkMatch.All" ActiveClass="active">SQL</NavLink>
         </li>
     </ul>
 </div>
