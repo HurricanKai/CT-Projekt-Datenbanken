@@ -1,0 +1,50 @@
+﻿@page "/beispiele/bibliothek/list-authors"
+@page "/beispiele/bibliothek/list-authors/{Page:int}"
+@using ct_datenbanken.Data
+@using Microsoft.EntityFrameworkCore
+@inject LibraryDbContext db
+@inject BookService bs
+@inject NavigationManager NavigationManager
+
+<h1>Liste aller Bücher</h1>
+<h2>@authorCount Bücher mit @db.Books.Count() Büchern</h2>
+<a class="btn btn-success" role="button" href="/beispiele/bibliothek/create">Neues Buch (create a book to create the associated Author)</a>
+<Pagination Page="@Page" MaxItems="@authorCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list-authors/" />
+<table>
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Bücheranzahl</th>
+        <th scope="col">Editieren</th>
+        <th scope="col">Details</th>
+        <th scope="col">Leihen/Zurückgeben</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var author in db.Authors.OrderBy(x => x.Name).Skip((Page) * 50).Take(50).Include(x => x.Books))
+    {
+        <tr>
+            <th scope="row">@author.Name</th>
+            <td>@author.Books.Count</td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/edit/author/@author.Id">Hier</a></td>
+            <td><a class="btn btn-outline-info" role="button" href="/beispiele/bibliothek/details/author/@author.Id">Hier</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+<Pagination Page="@Page" MaxItems="@authorCount" ItemsPerPage="50" BaseURL="/beispiele/bibliothek/list-authors" />
+
+@code
+{
+    [Parameter]
+    public int Page { get; set; }
+
+    protected override void OnInitialized()
+    {
+        authorCount = db.Authors.Count();
+        if ((Page + 1) * 50 >= authorCount && Page != 0)
+            NavigationManager.NavigateTo("/beispiele/bibliothek/list/0");
+    }
+
+    private int authorCount;
+}

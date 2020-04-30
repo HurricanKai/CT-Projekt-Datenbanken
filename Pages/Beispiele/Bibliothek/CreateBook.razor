@@ -1,0 +1,52 @@
+﻿@page "/beispiele/bibliothek/create"
+@using ct_datenbanken.Data
+@using Microsoft.EntityFrameworkCore
+@inject BookService bs
+@inject NavigationManager NavigationManager
+
+<h1>Erstelle ein neues Buch</h1>
+
+<EditForm Model="@book" OnValidSubmit="ValidSubmit">
+    <div class="form-group">
+        <DataAnnotationsValidator />
+    </div>
+    <div class="form-group">
+        <label for="title">Titel</label>
+        <InputText id="title" @bind-Value="book.Title" class="form-control"/>
+        <ValidationMessage For="@(() => book.Title)" />
+    </div>
+    <div class="form-group">
+        <label for="pageCount">Seitenanzahl</label>
+        <InputNumber id="pageCount" @bind-Value="book.PageCount" class="form-control"/>
+        <ValidationMessage For="@(() => book.PageCount)" />
+    </div>
+    <div class="form-group">
+        <label for="available">Verfügbar</label>
+        <InputCheckbox id="available" @bind-Value="book.IsAvailable" class="form-control"/>
+        <ValidationMessage For="@(() => book.IsAvailable)" />
+    </div>
+    <div class="form-group">
+        <label for="authorName">Name des Authors</label>
+        <InputText id="authorName" @bind-Value="book.AuthorName" class="form-control"/>
+        <ValidationMessage For="@(() => book.AuthorName)" />
+    </div>
+    <div class="form-group">
+        <label for="description">Beschreibung (optional)</label>
+        <InputTextArea id="description" @bind-Value="book.Description" class="form-control"/>
+        <ValidationMessage For="@(() => book.Description)" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="form-control">Fertig</button>
+    </div>
+</EditForm>
+
+
+@code{
+    BookDTO book = new BookDTO();
+
+    private void ValidSubmit()
+    {
+        bs.Create(book);
+        NavigationManager.NavigateTo("/beispiele/bibliothek");
+    }
+}
